@@ -13,6 +13,11 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    // A two motor differential drive example.
+    public static final int kDriveRightFront = 0;
+    public static final int kDriveRightMiddle = 1;
 
+    // A third motor in it's own subsystem
+    public static final int kSpinMotor = 2;
     
 }
