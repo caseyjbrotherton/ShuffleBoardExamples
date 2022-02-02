@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -19,6 +21,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -28,6 +31,13 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    // Static method, default is "recording-${time}"
+    Shuffleboard.setRecordingFileNameFormat("special-robot-${date}-${time}");
+
+    // Record everything in the driverstation
+    Shuffleboard.startRecording();
+
+
   }
 
   /**
@@ -48,7 +58,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+
+    // Stop recording in the dashboard.
+    Shuffleboard.stopRecording();
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -58,10 +72,14 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
+    // Mark in Shuffleboard that we are starting an autonomous command
+    Shuffleboard.addEventMarker("Start Autonomous",EventImportance.kNormal);
+
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
   }
 
   /** This function is called periodically during autonomous. */
@@ -77,6 +95,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    Shuffleboard.addEventMarker("Start Teleop",EventImportance.kNormal);
   }
 
   /** This function is called periodically during operator control. */
