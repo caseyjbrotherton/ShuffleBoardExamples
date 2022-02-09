@@ -34,9 +34,6 @@ public class Robot extends TimedRobot {
     // Static method, default is "recording-${time}"
     Shuffleboard.setRecordingFileNameFormat("special-robot-${date}-${time}");
 
-    // Record everything in the driverstation
-    Shuffleboard.startRecording();
-
 
   }
 
@@ -59,8 +56,6 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-
-    // Stop recording in the dashboard.
     Shuffleboard.stopRecording();
   }
 
@@ -72,6 +67,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
+    // Record everything in the driverstation
+    Shuffleboard.startRecording();
+
     // Mark in Shuffleboard that we are starting an autonomous command
     Shuffleboard.addEventMarker("Start Autonomous",EventImportance.kNormal);
 
@@ -79,6 +77,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
 
   }
 
@@ -95,6 +94,9 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    // Record everything in the driverstation
+    Shuffleboard.startRecording();
     Shuffleboard.addEventMarker("Start Teleop",EventImportance.kNormal);
   }
 
